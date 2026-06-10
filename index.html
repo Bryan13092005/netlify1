@@ -99,6 +99,7 @@
     <section class="card">
       <h2>Mensajes</h2>
       <button id="btnCargar">Cargar mensajes demo</button>
+      <button id="btnLimpiar">Limpiar mensajes</button>
       <div id="listaMensajes"></div>
     </section>
   </main>
@@ -109,9 +110,9 @@
     const listaMensajes = document.getElementById("listaMensajes");
     const btnEnviar = document.getElementById("btnEnviar");
     const btnCargar = document.getElementById("btnCargar");
-
+    const btnLimpiar = document.getElementById("btnLimpiar");
     const API_BASE = "/api";
-
+    
     function mostrarEstado(texto, tipo) {
       estado.textContent = texto;
       estado.className = "estado " + tipo;
@@ -150,7 +151,14 @@
       btnEnviar.disabled = true;
       btnEnviar.textContent = "Enviando...";
       mostrarEstado("Enviando datos al backend...", "ok");
-
+      const mensaje = document.getElementById("mensaje").value.trim();
+      if(mensaje.length < 10){
+        mostrarEstado("El mensaje debe tener al menos 10 caracteres.", "error");
+        btnEnviar.disabled = false;
+        btnEnviar.textContent = "Enviar al backend";
+        return;
+      }
+      alert("El mensaje que vas a enviar tiene: " + mensaje.length + " caracteres");
       const data = {
         nombre: document.getElementById("nombre").value.trim(),
         email: document.getElementById("email").value.trim(),
@@ -182,6 +190,9 @@
     });
 
     btnCargar.addEventListener("click", cargarMensajes);
+    btnLimpiar.addEventListener("click", () => {
+      listaMensajes.innerHTML = "";
+    });
   </script>
 </body>
 </html>
